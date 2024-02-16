@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <title>Sign Up</title>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+</head>
+<div>
+    <form id="registration">
+        <input type="email" id="email">
+        <input type="password" id="password">
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<script>
+    var config = {
+        apiKey: "AIzaSyA0v1MRmfM3XWTT5M_OpqP_A6z06vDEm7M",
+        authDomain: "allstaterental.firebaseapp.com",
+    };
+    const app = firebase.initializeApp(config);
+    const auth = firebase.auth(app);
+
+    formElement = document.getElementById('registration')
+    formElement.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        auth.createUserWithEmailAndPassword(email, password).then((userCredential) => {
+            userCredential.user.getIdToken().then((token) => {
+                const url = "/sessionLogin";
+                const jToken = {idToken: token}
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'credentials': 'include',
+                    },
+                    body: JSON.stringify(jToken)
+                    
+                }).then(response => response.json()).catch((error)=>{console.log(error)})
+
+            })
+        })
+    })
+</script>
