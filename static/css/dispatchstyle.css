@@ -1,0 +1,19 @@
+#container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+}
+#map{
+    min-height: 50vh;
+    min-width: 40%;
+}
+#dispatch-controls {
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+#pending-orders, #pending-pickups, #assigned {
+    width: 30%;
+    min-height: 100%;
+}

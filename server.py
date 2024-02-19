@@ -1,6 +1,6 @@
 import os
 from functools import wraps
-from flask import Flask, render_template, request, jsonify, abort, redirect, make_response
+from flask import Flask, render_template, request, jsonify, abort, redirect, make_response, Response
 from flask_login import LoginManager, login_user
 import firebase_admin
 from firebase_admin import auth, credentials, exceptions
@@ -67,11 +67,19 @@ def logout():
         return redirect("/signin")
 
 #Dispatch----------------------------------------
+    
+@app.route("/order-events")
+def orderEvent():
+    def get_data():
+        
+        yield f'event: NewPickup \ndata: <div>hi</div>\n\n'
+    
+    return Response(get_data(), mimetype='text/event-stream')
 
 @app.route("/dispatch")
-@protected
+#@protected
 def dispatch():
-    return render_template('welcome.html')
+    return render_template('dispatch.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
