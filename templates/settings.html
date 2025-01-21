@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="{{url_for('quicbooksAuth')}}">
+        <button type="submit">Connect to Quickbooks</button>
+    </form>
+{% endblock %}

@@ -6,12 +6,25 @@ import firebase_admin
 from firebase_admin import auth, credentials, exceptions
 import datetime
 from dotenv import load_dotenv
+from intuitlib.client import AuthClient
+from intuitlib.enums import Scopes
+from intuitlib.exceptions import AuthClientError
+from uuid import uuid4 as uuid
+from listsAndDicts import equipmentTypes, customers
+from firestore import Equipment, Customers
 
 app = Flask(__name__)
 
 #no cred necessary running on google cloud
 cred = credentials.Certificate("serviceaccountkey.json")
 firebase_app = firebase_admin.initialize_app(cred)
+
+auth_client = AuthClient(
+    client_id = os.getenv('CLIENT_ID'),
+    client_secret = os.getenv('CLIENT_SECRET'),
+    redirect_uri = 'http://localhost:5000/oauthcallback',
+    environment = 'sandbox'
+)
 
 def protected(func):
     @wraps(func)
@@ -65,21 +78,49 @@ def logout():
         return resp
     except:
         return redirect("/signin")
+    
+@app.route("/quickbooksAuthorization")
+def quicbooksAuth():
+
+    url = auth_client.get_authorization_url([Scopes.ACCOUNTING])
+
+    return redirect(url)
+
+@app.route("/oauthcallback")
+def oauthCallback():
+    try:
+        auth_client.get_bearer_token(request.args.get('code'), request.args.get('realmId'))
+
+    except AuthClientError as e:
+        print(e.status_code)
+        print(e.content)
+    print('callback')
+    return render_template('welcome.html')
 
 #Dispatch----------------------------------------
     
 @app.route("/order-events")
 def orderEvent():
-    def get_data():
-        
-        yield f'event: NewPickup \ndata: <div>hi</div>\n\n'
+    def eventStream():
+        while True:
+            yield f'event: NewPickup \ndata: <div>hi</div>\n\n'
     
-    return Response(get_data(), mimetype='text/event-stream')
+    return Response(eventStream(), mimetype='text/event-stream')
 
 @app.route("/dispatch")
 #@protected
 def dispatch():
     return render_template('dispatch.html')
+#Sales--------------------------------------------
+@app.route("/settings")
+#@protected
+def settings():
+    return render_template('settings.html')
+
+@app.route("/orders")
+#@protected
+def orders():
+    return render_template('orders.html', equipmentTypes=equipmentTypes, customers=customers)
 
 if __name__ == "__main__":
     app.run(debug=True)
