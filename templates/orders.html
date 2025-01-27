@@ -9,120 +9,33 @@
 }</style>
 <div class="container">
     <h2>New Order</h2>
-    <form>
-        <select class="form-select mb-3" id="customer" onchange="customerChange()">
-            <option selected value="">Select Customer</option>
-            <option value="add">+ New Customer</option>
-            {% for key, value in customers.items() %}
-                <option value="{{key}}">{{value}}</option>
-            {% endfor %}
-        </select>
-        <select class="form-select mb-3" id="location" onchange="openNewLocationModal()">
-            <option selected value="">Select Location</option>
-            <option value="add">+ New Location</option>
-        </select>
-        <div class="row mb-3">
-            <div class="col-8">
-                <select class="form-select" id="equipment">
-                    <option selected value="">Select Equipment Type</option>
-                    {% for key, value in equipmentTypes.items() %}
-                        <option value="{{key}}">{{value}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col">
-                <select class="form-select" id="quantity">
-                    <option selected value="">Qty</option>
-                    {% for i in range(1,11) %}
-                        <option value="{{i}}">{{i}}</option>
-                    {% endfor %}
-                </select>
-            </div>
+    <select class="form-select mb-3" id="customer" onchange="customerChange()">
+        <option selected value="">Select Customer</option>
+        <option value="add">+ New Customer</option>
+        {% for key, value in customers.items() %}
+            <option value="{{key}}">{{value}}</option>
+        {% endfor %}
+    </select>
+    <div id="tabs-container">
+        <ul class="nav nav-pills justify-content-center mb-3" id="pill-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-rental-tab" data-bs-toggle="pill" data-bs-target="#pills-rental" type="button" role="tab" aria-controls="pills-rental" aria-selected="true">Rental</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-move-tab" data-bs-toggle="pill" data-bs-target="#pills-move" type="button" role="tab" aria-controls="pills-move" aria-selected="true">Move</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="nav-service-form" data-bs-toggle="tab" href="#service-form">Service</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            {% include "modals_and_forms/move-form.html" %}
+            {% include "modals_and_forms/service-form.html" %}    
+            {% include "modals_and_forms/rental-form.html" %}    
         </div>
-        <div class="input-group mb-3">
-            <label for="startdate" class="input-group-text">Start Date</label>
-            <input type="date" class="form-control" id="startdate" required>
-        </div>
-        <h2>Rates</h2>
-        <div class="row mb-3">
-            <div class="col input-group">
-                <span class="input-group-text d-none d-md-block">$</span>
-                <input type="text" class="form-control" placeholder="Day" aria-label="Day Rate">
-            </div>
-            <div class="col input-group">
-                <span class="input-group-text d-none d-md-block">$</span>
-            <input type="text" class="form-control" placeholder="Week" aria-label="Week">
-            </div>
-            <div class="col input-group">
-                <span class="input-group-text d-none d-md-block">$</span>
-            <input type="text" class="form-control" placeholder="4 Week" aria-label="4 Week">
-            </div>
-          </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label for="delivery" class="form-label">Delivery</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="text" class="form-control" id="delivery" placeholder="180" aria-label="Delivery Rate">
-                </div>
-            </div>   
-            <div class="col">
-                <label for="return" class="form-label">Return</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="text" class="form-control" id="return" placeholder="180" aria-label="Return Rate">
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="row mb-3" id="fuelSelection">
-            <div class="col">
-                <div class="form-check form-switch d-flex align-items-center">
-                    <input class="form-check-input me-3" type="checkbox" role="switch" id="fuelswitch" checked>
-                    <label class="form-check-label" for="fuelswitch">Fill on Return ($7.98/G)</label>
-                </div>
-            </div>
-            <div class="col">
-                <label for="fuel" class="form-label">Fuel/Propane</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="text" class="form-control" id="fuelprice" placeholder="0" aria-label="Fuel" disabled>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="row mb-3">
-            <div class="col">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="environmental" checked>
-                    <label class="form-check-label" for="environmental">
-                      Environmental Fee ($19.00)
-                    </label>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="insurance">
-                    <label class="form-check-label" for="insurance">
-                      13% Insurance
-                    </label>
-                  </div>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label for="notes" class="form-label">Notes</label>
-                <textarea class="form-control" id="notes" rows="3"></textarea>
-            </div>
-        </div>
-        <div class="mb-3 row justify-content-center">   
-            <div class="col">
-                <button type="submit" class="btn btn-primary col-12">Submit</button>
-            </div>    
-        </div>
-    </form>
-    {% include 'modals/newlocation.html' %}
-    {% include 'modals/newcustomer.html' %}
+    </div>
+{% include 'modals_and_forms/newlocation.html' %}
+{% include 'modals_and_forms/newcustomer.html' %}
 
 </div>
 <script src="{{url_for('static', filename='js/orders.js')}}"></script>

@@ -26,10 +26,39 @@ class Equipment:
 
 class Reservations:
     def __init__(self, start_date, customer, location, requestor, contact, purchase_order, items=[]):
+        self.start_date = start_date
+        self.customer = customer
+        self.location = location
+        self.requestor = requestor
+        self.contact = contact
+        self.purchase_order = purchase_order
+        self.items = items
+
+    def save():
+        pass
+    def update(self):
+        pass
+    def validate():
         pass
         
 class Moves:
-    def __init__(self, date, customer, start, end, requestor):
+    def __init__(self, date, customer, pickup, delivery, requestor, notes, equipment, ordered_by='none', delivered_by='none'):
+        self.date = date
+        self.customer = customer
+        self.pickup = pickup
+        self.delivery = delivery
+        self.requestor = requestor
+        self.notes = notes
+        self.equipment = equipment
+        self.ordered_by = ordered_by
+        self.delivered_by = delivered_by
+
+
+    def save():
+        pass
+    def update(self):
+        pass
+    def validate():
         pass
 
 class Repairs:

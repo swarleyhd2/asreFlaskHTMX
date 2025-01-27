@@ -10,10 +10,18 @@ from intuitlib.client import AuthClient
 from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
 from uuid import uuid4 as uuid
-from listsAndDicts import equipmentTypes, customers
-from firestore import Equipment, Customers
+from form_select_options import equipmentTypes, customers
+from firestore import Equipment, Customers, Moves, Reservations, Repairs, Rentals
+from forms import moveForm, rentalForm, repairForm, newCustomerForm, newLocationForm
+
+
+
+load_dotenv()
+
 
 app = Flask(__name__)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
 
 #no cred necessary running on google cloud
 cred = credentials.Certificate("serviceaccountkey.json")
@@ -120,7 +128,70 @@ def settings():
 @app.route("/orders")
 #@protected
 def orders():
-    return render_template('orders.html', equipmentTypes=equipmentTypes, customers=customers)
+    move = moveForm()
+    return render_template('orders.html', equipmentTypes=equipmentTypes, customers=customers, moveForm = move)
+
+@app.route("/newrental") 
+def submitRental():
+    form = rentalForm(request.POST)
+    if request.method == 'POST' and form.validate():
+        if form['formType'] == 'rental':
+            try:
+                print('test working')
+                return {'status': 'success'}
+            except Exception as e:
+                return {'error': e}
+            
+@app.route("/newrepair")         
+def submitRepair():
+    if request.method == 'POST':
+        formData = request.form
+        if formData['formType'] == 'repair':
+            try:
+                print('test working')
+                return {'status': 'success'}
+            except Exception as e:
+                return {'error': e}
+            
+@app.route("/newmove", methods=['POST'])           
+def submitMove():
+    form = moveForm()
+    if request.method == 'POST' and form.validate():
+        try:
+            print('test working')
+            return {'status': 'success'}
+        except Exception as e:
+            print(e)
+            return {'error': e}
+    else:
+        print(form.errors)
+        return render_template('modals_and_forms/move-form.html', moveForm=form)
+            
+@app.route("/newcustomer")             
+def submitNewCustomer():
+    if request.method == 'POST':
+        formData = request.form
+        if formData['formType'] == 'customer':
+            try:
+                print('test working')
+                return {'status': 'success'}
+            except Exception as e:
+                return {'error': e}
+            
+@app.route("/newlocation")             
+def submitNewLocation():
+    if request.method == 'POST':
+        formData = request.form
+        if formData['formType'] == 'location':
+            try:
+                print('test working')
+                return {'status': 'success'}
+            except Exception as e:
+                return {'error': e}       
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+

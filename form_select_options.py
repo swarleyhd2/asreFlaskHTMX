@@ -15,11 +15,11 @@ equipmentTypes = {
     "13": "6,000lb / 4 Stage Industrial Forklift",
     "14": "5,000lb / 3 Stage Industrial Forklift",
     "15": "10,000lb / 54' RT Forklift",
-    "16": "46' Boomlift",
-    "17": "45' Boomlift",
+    "16": "40' Boomlift",
+    "17": "46' Boomlift",
     "18": "60' Boomlift",
-    "19": "65' Boomlift",
-    "20": "66' Boomlift",
+    "19": "66' Boomlift",
+    "20": "80' Boomlift",
     "21": "86' Boomlift",
     "22": "135' Boomlift",
     "23": "5,000lb / 18' RT Forklift",
@@ -37,4 +37,9 @@ equipmentTypes = {
 customers = {
     "0": "None",
     "1": "Somone",
+}
+
+locations = {
+    "0": "123 Fake Street",
+    "1": "456 Fake Street",
 }

@@ -1,0 +1,52 @@
+<form class="card col col-sm-12 col-md-10 container tab-pane fade justify-content-center" id="pills-move" role="tab-panel" aria-labelledby="pills-move-tab" method="post" hx-post="{{url_for('submitMove')}}" hx-swap="outerHTML">
+    {% if moveForm.errors %}
+        <ul class="errors">
+            {% for field_name, field_errors in moveForm.errors|dictsort if field_errors %}
+                {% for error in field_errors %}
+                    <li>{{ moveForm[field_name].label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {{moveForm.csrf_token}}
+    {{moveForm.customer}}
+    <div class="row mb-3">
+        <div class="col-6">
+            {{moveForm.date.label(class="col-12")}}
+            {{moveForm.date(class="col-6 form-control")}}
+        </div>
+        <div class="col-6">
+            {{moveForm.equipment.label(class="col-12")}}
+            {{moveForm.equipment(class="col-12 form-control")}}
+        </div>
+    </div>
+    <div class="row justify-content-center" style="margin-bottom: 10px;">
+        <div class="col-12">
+            {{moveForm.pickup.label(class="col-12")}}
+            {{moveForm.pickup(class="col-12 form-control")}}
+        </div>
+    </div>
+    <div  class="row justify-content-center" style="margin-bottom: 10px;">
+        <div class="col-12">
+            {{moveForm.delivery.label(class="col-12")}}
+            {{moveForm.delivery(class="col-12 form-control")}}
+        </div>
+    </div>
+    <div  class="row justify-content-center" style="margin-bottom: 10px;">
+        <div class="col-12">
+            {{moveForm.requestor.label(class="col-12")}}
+            {{moveForm.requestor(class="col-12 form-control")}}
+        </div>
+    </div>
+    <div  class="row justify-content-center" style="margin-bottom: 10px;">
+        <div class="col-12">
+            {{moveForm.notes.label(class="col-12")}}
+            {{moveForm.notes(class="col-12 form-control")}}
+        </div>
+    </div>
+    <div class="row justify-content-center" style="margin-bottom: 10px; margin-top: 10px;">
+        <div class="col col-md-8 col-sm-6">
+            <button type="submit" class="btn btn-primary col-12">Submit</button>
+        </div>
+    </div>
+</form>
