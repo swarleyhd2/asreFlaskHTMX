@@ -6,73 +6,47 @@
 {% block head_javascript %}
 {{ super() }}
 <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+<script src="{{url_for('static', filename='node_modules/sortablejs/sortable.min.js')}}"></script>
 {% endblock %}
 {% block content %}
-<div id="container">
-    <div id="map"></div>
-        
-    <div id="dispatch-controls">
-        <div id="pending-orders">
-            <table>
-                <thead>
-                    <h2>Pending Orders</h2>
-                </thead>
-                <tr>
-                    <td>
-                        No Pending Orders
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="pending-pickups">
-            <table id="pending-pickups">
-                <thead>
-                    <h2>Pending Pickups</h2>
-                </thead>
-                <tr>
-                    <td>
-                        No Pending Pickups
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="assigned">
-            <table>
-                <thead>
-                    <h2>Assigned</h2>
-                </thead>
-                <tr>
-                    <td>
-                        No Assignments
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="available-units">
-        <h2>Avaliable Units</h2>
-    </div>
-
-    <div id="on-rent">
-        <h2>On Rent</h2>
-    </div>
+<div id="container" class="justify-content-evenly">
+    
+    <form class="col card sortable" id="pending" hx-post="{{url_for('dispatchItems')}}" hx-trigger="end" style="min-height: 80vh;">
+        <h2>Reserved</h2>
+        <div class="htmx-indicator">Updating...</div>
+        <div><input type='hidden' name='item' value='1'/>Item 1</div>
+        <div><input type='hidden' name='item' value='2'/>Item 2</div>
+        <div><input type='hidden' name='item' value='3'/>Item 3</div>
+        <div><input type='hidden' name='item' value='4'/>Item 4</div>
+        <div><input type='hidden' name='item' value='5'/>Item 5</div>
+    </form>
+    <form class="col card sortable" id="dispatch">
+        todays todo
+    </form>
+    <form class="col card sortable" id="onrent">
+        on rent
+    </form>
 </div>
-    <script>
-        (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-        key: "AIzaSyA0v1MRmfM3XWTT5M_OpqP_A6z06vDEm7M",
-        v: "weekly",
-        });
-
-        let map;
-
-        async function initMap() {
-            const { Map } = await google.maps.importLibrary("maps")
-
-            map = new Map(document.getElementById("map"), {
-                center: { lat: -34.977, lng: 150.644 },
-                zoom:8,
+<script>
+    htmx.onLoad(function(content) {
+        var sortables = content.querySelectorAll('.sortable');
+        for(var i  = 0; i < sortables.length; i++) {
+            var sortable = sortables[i];
+            var sortableInstance = new Sortable(sortable, {
+                animation: 150,
+                ghostClass: 'blue-background-class',
+                filter: ".htmx-indicator",
+                onMove: function(evt) {
+                    return evt.related.className.indexOf('htmx-indicator') === -1;
+                },
+                onEnd: function(evt) {
+                    this.option("disabled", true);
+                }
+            });
+            sortable.addEventListener("htmx:afterSwap", function() {
+                sortableInstance.option("disabled", false);
             });
         }
-        initMap();
-    </script>
+    })
+</script>
 {% endblock %}

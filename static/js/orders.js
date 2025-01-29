@@ -1,16 +1,6 @@
 const locationSelection = document.getElementById('location');
 const customerSelection = document.getElementById('customer');
-const fuelPrice = document.getElementById('fuelprice');
-const fuelSwitch = document.getElementById('fuelswitch');
 
-fuelSwitch.addEventListener("click", () => {
-    if (fuelSwitch.checked == true) {
-        fuelPrice.setAttribute('disabled', true)
-    }
-    else {
-        fuelPrice.removeAttribute('disabled')
-    }
-})
 
 function openNewLocationModal() {
     if(locationSelection.value == "add") {
@@ -29,9 +19,6 @@ function locationSelectionChange(value) {
     locationSelection.value = value;
 }
 
-function saveLocation() {
-
-}
 
 function loadLocations(customerID) {
     console.log(customerID)
@@ -49,6 +36,7 @@ function loadLocations(customerID) {
 
 function customerChange() {
     console.log(customerSelection.value);
+    document.querySelector('.customerID-input').value = customerSelection.value;
     if(customerSelection.value == "add") {
         console.log("New Customer");
         openNewCustomerModal();
@@ -66,4 +54,14 @@ function newCustomerClose(value) {
     }
     customerSelection.value = value;
 }
-
+function formChange(htmxtarget) {
+    let currentTab = document.querySelector('[aria-selected=true]')
+    currentTab.setAttribute('aria-selected', 'false')
+    currentTab.classList.remove('active')
+    let newTab = htmxtarget
+    console.log(newTab)
+    newTab.setAttribute('aria-selected', 'true')
+    newTab.classList.add('selected')
+    newTab.classList.add('active')
+    document.querySelector('.customerID-input').value = customerSelection.value;
+}

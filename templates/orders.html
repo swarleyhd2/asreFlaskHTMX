@@ -17,21 +17,18 @@
         {% endfor %}
     </select>
     <div id="tabs-container">
-        <ul class="nav nav-pills justify-content-center mb-3" id="pill-tab" role="tablist">
+        <ul class="nav nav-pills justify-content-center mb-3" id="pill-tab" role="tablist" hx-target="#tab-contents" hx-on:htmx-after-on-load="formChange(event.target)">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-rental-tab" data-bs-toggle="pill" data-bs-target="#pills-rental" type="button" role="tab" aria-controls="pills-rental" aria-selected="true">Rental</button>
+                <button role="tab" aria-controls="tab-contents" type="button" data-bs-toggle="pill"  data-bs-target="#pills-rental" aria-selected="true" class="nav-link active selected" id="pills-rental-tab" hx-get="{{url_for('newRental')}}">Rental</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-move-tab" data-bs-toggle="pill" data-bs-target="#pills-move" type="button" role="tab" aria-controls="pills-move" aria-selected="true">Move</button>
+                <button role="tab" aria-controls="tab-contents" type="button" data-bs-toggle="pill"  data-bs-target="#pills-move" aria-selected="false" class="nav-link" id="pills-move-tab" hx-get="{{url_for('newMove')}}">Move</button>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="nav-service-form" data-bs-toggle="tab" href="#service-form">Service</a>
+                <button role="tab" aria-controls="tab-contents" type="button" data-bs-toggle="pill"  data-bs-target="#pills-service" aria-selected="false" class="nav-link" id="pills-service-tab" hx-get="{{url_for('newRepair')}}">Service</button>
             </li>
         </ul>
-        <div class="tab-content" id="pills-tabContent">
-            {% include "modals_and_forms/move-form.html" %}
-            {% include "modals_and_forms/service-form.html" %}    
-            {% include "modals_and_forms/rental-form.html" %}    
+        <div class="tab-contents" id="tab-contents" role="tabpanel" hx-get="{{url_for('newRental')}}" hx-trigger="load"> 
         </div>
     </div>
 {% include 'modals_and_forms/newlocation.html' %}

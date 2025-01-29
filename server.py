@@ -131,40 +131,48 @@ def orders():
     move = moveForm()
     return render_template('orders.html', equipmentTypes=equipmentTypes, customers=customers, moveForm = move)
 
-@app.route("/newrental") 
-def submitRental():
-    form = rentalForm(request.POST)
-    if request.method == 'POST' and form.validate():
-        if form['formType'] == 'rental':
-            try:
-                print('test working')
-                return {'status': 'success'}
-            except Exception as e:
-                return {'error': e}
-            
-@app.route("/newrepair")         
-def submitRepair():
+@app.route("/newrental", methods=['POST','GET']) 
+def newRental():
+    form = rentalForm()
     if request.method == 'POST':
-        formData = request.form
-        if formData['formType'] == 'repair':
+        if form.validate():
             try:
                 print('test working')
                 return {'status': 'success'}
             except Exception as e:
+                print(e)
                 return {'error': e}
-            
-@app.route("/newmove", methods=['POST'])           
-def submitMove():
-    form = moveForm()
-    if request.method == 'POST' and form.validate():
-        try:
-            print('test working')
-            return {'status': 'success'}
-        except Exception as e:
-            print(e)
-            return {'error': e}
     else:
-        print(form.errors)
+        return render_template('modals_and_forms/rental-form.html', equipmentTypes=equipmentTypes, moveForm=form)
+            
+@app.route("/newrepair", methods=['POST','GET'])         
+def newRepair():
+    print('repair')
+    form = repairForm()
+    if request.method == 'POST':
+        if form.validate():
+            try:
+                print('test working')
+                return {'status': 'success'}
+            except Exception as e:
+                print(e)
+                return {'error': e}
+    else:
+        return render_template('modals_and_forms/service-form.html', moveForm=form)
+            
+@app.route("/newmove", methods=['POST','GET'])           
+def newMove():
+    print('move')
+    form = moveForm()
+    if request.method == 'POST':
+        if form.validate():
+            try:
+                print('test working')
+                return {'status': 'success'}
+            except Exception as e:
+                print(e)
+                return {'error': e}
+    else:
         return render_template('modals_and_forms/move-form.html', moveForm=form)
             
 @app.route("/newcustomer")             
@@ -188,6 +196,19 @@ def submitNewLocation():
                 return {'status': 'success'}
             except Exception as e:
                 return {'error': e}       
+
+@app.route("/equipmenttypesection")
+def equipmentTypeSection():
+    return render_template('modals_and_forms/equipment-form.html', equipmentTypes=equipmentTypes)
+
+@app.route("/dispatchitems", methods=['POST', 'GET'])
+def dispatchItems():
+    sample = equipmentTypes.items()
+    if request.method == 'POST':
+        
+        return sample
+    else:
+        return sample
 
 
 

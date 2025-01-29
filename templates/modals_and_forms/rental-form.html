@@ -1,44 +1,11 @@
-<form id="pills-rental" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-rental-tab">
-    <input type="text" name="customer" id="customer" hidden>
-    <input type="text" name="formType" id="formType" hidden>
+<form id="pills-rental" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-rental-tab" method="post" hx-post="{{url_for('newRental')}}" hx-swap="outerHTML" >
     <select class="form-select mb-3" id="rental-location" onchange="openNewLocationModal()">
         <option selected value="">Select Location</option>
         <option value="add">+ New Location</option>
     </select>
-    <div class="row mb-3 equipment-row">
-        <div class="col-8">
-            <select class="form-select" id="equipment">
-                <option selected value="">Select Equipment Type</option>
-                {% for key, value in equipmentTypes.items() %}
-                    <option value="{{key}}">{{value}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col">
-            <select class="form-select" id="quantity">
-                <option selected value="">Qty</option>
-                {% for i in range(1,11) %}
-                    <option value="{{i}}">{{i}}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
-    <h2>Rates</h2>
-    <div class="row mb-3">
-        <div class="col input-group">
-            <span class="input-group-text d-none d-md-block">$</span>
-            <input type="text" class="form-control" placeholder="Day" aria-label="Day Rate">
-        </div>
-        <div class="col input-group">
-            <span class="input-group-text d-none d-md-block">$</span>
-        <input type="text" class="form-control" placeholder="Week" aria-label="Week">
-        </div>
-        <div class="col input-group">
-            <span class="input-group-text d-none d-md-block">$</span>
-        <input type="text" class="form-control" placeholder="4 Week" aria-label="4 Week">
-        </div>
-    </div>
-    <button type="button" class="btn btn-outline-secondary">+ Add Equipment</button>
+    <div class="equipmentsection" hx-get="{{url_for('equipmentTypeSection')}}" hx-swap="innerHTML" hx-trigger="load"></div>
+
+    <button type="button" class="btn btn-outline-secondary" hx-target=".equipmentsection" hx-swap="beforeend" hx-get="{{url_for('equipmentTypeSection')}}">+ Add Equipment</button>
     <hr>
     <div class="input-group mb-3">
         <label for="startdate" class="input-group-text">Start Date</label>
@@ -109,3 +76,12 @@
         </div>    
     </div>
 </form>
+<script>
+    htmx.on("#fuelswitch", "click", function() {
+        if (document.getElementById('fuelswitch').checked == true) {
+            document.getElementById('fuelprice').setAttribute('disabled', true)
+        }else {
+            document.getElementById('fuelprice').removeAttribute('disabled')
+        }
+        })
+</script>
