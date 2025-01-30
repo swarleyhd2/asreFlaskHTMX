@@ -9,7 +9,10 @@
         </ul>
     {% endif %}
     {{moveForm.csrf_token}}
-    {{moveForm.customer(class="customerID-input")}}
+    <div class="row mb-3">
+        {{moveForm.customer.label(class="col-12")}}
+        {{moveForm.customer(class="col-12 form-control")}}
+    </div>
     <div class="row mb-3">
         <div class="col-6">
             {{moveForm.date.label(class="col-12")}}

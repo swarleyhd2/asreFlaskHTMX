@@ -39,7 +39,4 @@ customers = {
     "1": "Somone",
 }
 
-locations = {
-    "0": "123 Fake Street",
-    "1": "456 Fake Street",
-}
+

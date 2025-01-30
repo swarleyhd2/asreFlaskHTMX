@@ -14,11 +14,9 @@
     <form class="col card sortable" id="pending" hx-post="{{url_for('dispatchItems')}}" hx-trigger="end" style="min-height: 80vh;">
         <h2>Reserved</h2>
         <div class="htmx-indicator">Updating...</div>
-        <div><input type='hidden' name='item' value='1'/>Item 1</div>
-        <div><input type='hidden' name='item' value='2'/>Item 2</div>
-        <div><input type='hidden' name='item' value='3'/>Item 3</div>
-        <div><input type='hidden' name='item' value='4'/>Item 4</div>
-        <div><input type='hidden' name='item' value='5'/>Item 5</div>
+        {% for key, value in samples.items() %}
+            <div><input type='hidden' name='item' value='{{value}}'/>{{key}}</div>
+        {% endfor %}
     </form>
     <form class="col card sortable" id="dispatch">
         todays todo
@@ -28,12 +26,13 @@
     </form>
 </div>
 <script>
-    htmx.onLoad(function(content) {
-        var sortables = content.querySelectorAll('.sortable');
+    htmx.onLoad(function() {
+        var sortables = document.querySelectorAll('.sortable');
         for(var i  = 0; i < sortables.length; i++) {
             var sortable = sortables[i];
             var sortableInstance = new Sortable(sortable, {
                 animation: 150,
+                group: 'shared',
                 ghostClass: 'blue-background-class',
                 filter: ".htmx-indicator",
                 onMove: function(evt) {

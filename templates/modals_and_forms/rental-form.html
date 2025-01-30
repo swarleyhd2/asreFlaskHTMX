@@ -1,4 +1,8 @@
 <form id="pills-rental" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-rental-tab" method="post" hx-post="{{url_for('newRental')}}" hx-swap="outerHTML" >
+    <div class="row mb-3">
+        {{form.customer.label(class="col-12")}}
+        {{form.customer(class="col-12 form-control", **{"hx-get":"/locations", "hx-target":"#rental-location"})}}
+    </div> 
     <select class="form-select mb-3" id="rental-location" onchange="openNewLocationModal()">
         <option selected value="">Select Location</option>
         <option value="add">+ New Location</option>

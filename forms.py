@@ -1,6 +1,6 @@
 from wtforms import StringField, IntegerField, SelectField, DateField, validators, HiddenField, TextAreaField, Form, FieldList, FormField, BooleanField
 from flask_wtf import FlaskForm
-from form_select_options import equipmentTypes, customers, locations
+from form_select_options import equipmentTypes, customers
 
 class customerSelect(FlaskForm):
     customer = SelectField('Customer', choices=customers.items())
@@ -12,9 +12,9 @@ class newLocation(FlaskForm):
     customer = HiddenField('customerID')
 
 class moveForm(FlaskForm):
-    customer = HiddenField('customerID')
-    pickup = SelectField('Pickup', choices=locations.items())
-    delivery = SelectField('Delivery', choices=locations.items())
+    customer = SelectField('Customer', choices=customers.items())
+    pickup = SelectField('Pickup')
+    delivery = SelectField('Delivery')
     equipment = StringField('Equipment')
     date = DateField('Date', format='%m/%d/%Y', validators=[validators.InputRequired()])
     requestor = StringField('Requested By')
@@ -28,7 +28,7 @@ class equipmentTypeForm(Form):
     month_rate = IntegerField('4 Week Rate')
 
 class rentalForm(FlaskForm):
-    customer = HiddenField('customerID')
+    customer = SelectField('Customer', choices=customers.items())
     equipment = FieldList(FormField(equipmentTypeForm), min_entries=1)
     start_date = DateField('Start Date')
     delivery = IntegerField('Delivery')
@@ -41,7 +41,7 @@ class rentalForm(FlaskForm):
 
 
 class repairForm(FlaskForm):
-    customer = HiddenField('customerID')
+    customer = SelectField('Customer', choices=customers.items())
 
 class newCustomerForm(FlaskForm):
     name = StringField('Name')

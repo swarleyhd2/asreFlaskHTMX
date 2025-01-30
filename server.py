@@ -2,8 +2,8 @@ import os
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, abort, redirect, make_response, Response
 from flask_login import LoginManager, login_user
-import firebase_admin
-from firebase_admin import auth, credentials, exceptions
+from firebase_admin import auth, exceptions
+from firebase_init import firebase_app
 import datetime
 from dotenv import load_dotenv
 from intuitlib.client import AuthClient
@@ -11,7 +11,7 @@ from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
 from uuid import uuid4 as uuid
 from form_select_options import equipmentTypes, customers
-from firestore import Equipment, Customers, Moves, Reservations, Repairs, Rentals
+from firestore_db import Equipment, Customers, Moves, Reservations, Repairs, Rentals
 from forms import moveForm, rentalForm, repairForm, newCustomerForm, newLocationForm
 
 
@@ -23,9 +23,7 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-#no cred necessary running on google cloud
-cred = credentials.Certificate("serviceaccountkey.json")
-firebase_app = firebase_admin.initialize_app(cred)
+
 
 auth_client = AuthClient(
     client_id = os.getenv('CLIENT_ID'),
@@ -118,7 +116,11 @@ def orderEvent():
 @app.route("/dispatch")
 #@protected
 def dispatch():
-    return render_template('dispatch.html')
+    sample = {"test":1,
+            "test2":2,
+            "test3":3,
+            "test4":4}
+    return render_template('dispatch.html', samples=sample)
 #Sales--------------------------------------------
 @app.route("/settings")
 #@protected
@@ -143,7 +145,7 @@ def newRental():
                 print(e)
                 return {'error': e}
     else:
-        return render_template('modals_and_forms/rental-form.html', equipmentTypes=equipmentTypes, moveForm=form)
+        return render_template('modals_and_forms/rental-form.html', equipmentTypes=equipmentTypes, form=form)
             
 @app.route("/newrepair", methods=['POST','GET'])         
 def newRepair():
@@ -185,17 +187,7 @@ def submitNewCustomer():
                 return {'status': 'success'}
             except Exception as e:
                 return {'error': e}
-            
-@app.route("/newlocation")             
-def submitNewLocation():
-    if request.method == 'POST':
-        formData = request.form
-        if formData['formType'] == 'location':
-            try:
-                print('test working')
-                return {'status': 'success'}
-            except Exception as e:
-                return {'error': e}       
+                  
 
 @app.route("/equipmenttypesection")
 def equipmentTypeSection():
@@ -203,12 +195,22 @@ def equipmentTypeSection():
 
 @app.route("/dispatchitems", methods=['POST', 'GET'])
 def dispatchItems():
-    sample = equipmentTypes.items()
+
     if request.method == 'POST':
         
-        return sample
+        return render_template("<div>hi</div>")
     else:
-        return sample
+        return render_template("")
+
+@app.route("/locations" , methods=['POST', 'GET'])
+def locations():
+    if request.method == 'POST':
+        return render_template("newlocation.html")
+    
+    elif request.method == 'GET':
+        customer = Customers()
+        locations = customer.get_locations()
+        return render_template("location-select.html", locations=locations)
 
 
 

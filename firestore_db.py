@@ -1,6 +1,4 @@
-import firebase_admin
-from firebase_admin import firestore
-
+from firebase_init import db
 
 class Equipment:
     def __init__(self, unit, make, model, year, category, serial, last_pm='1/1/2000', hours=0, status='down', last_location='none', service_history=[], rental_history=[]):
@@ -77,7 +75,11 @@ class Customers:
     def update(self):
         pass
     def get_locations(self):
-        pass
+        locations = {
+            "0": "123 Fake Street",
+            "1": "456 Fake Street",
+        }
+        return locations
     def get_moves(self):
         pass
     def get_rentals(self):
