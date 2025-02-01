@@ -1,0 +1,7 @@
+<option selected value="">Select Location</option>
+<option value="add">+ New Location</option>
+{% if locations %}
+{% for location in locations %}
+<option>{{location.name}}</option>
+{% endfor %}
+{% endif %}

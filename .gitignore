@@ -3,3 +3,5 @@
 contacts.xlsx
 /svcacct.json
 quickupload.py
+/static/node_modules
+.venv/Lib/site-packages
