@@ -11,7 +11,7 @@ from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
 from uuid import uuid4 as uuid
 from form_select_options import equipmentTypes, customers
-from firestore_db import Equipment, Customers, Moves, Reservations, Repairs, Rentals
+from firestore_db import Equipment, Customers, Moves, Reservations, Repairs, Rentals, get_locations_select
 from forms import moveForm, rentalForm, repairForm, newCustomerForm, newLocationForm
 
 
@@ -130,6 +130,7 @@ def settings():
 @app.route("/orders")
 #@protected
 def orders():
+
     move = moveForm()
     return render_template('orders.html', equipmentTypes=equipmentTypes, customers=customers, moveForm = move)
 
@@ -164,7 +165,6 @@ def newRepair():
             
 @app.route("/newmove", methods=['POST','GET'])           
 def newMove():
-    print('move')
     form = moveForm()
     if request.method == 'POST':
         if form.validate():
@@ -208,9 +208,8 @@ def locations():
         return render_template("newlocation.html")
     
     elif request.method == 'GET':
-        customer = Customers()
-        locations = customer.get_locations()
-        return render_template("location-select.html", locations=locations)
+        locations = get_locations_select(request.args.get('customer'))
+        return render_template("modals_and_forms/location-select-options.html", locations=locations)
 
 
 

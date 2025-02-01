@@ -10,8 +10,10 @@
     {% endif %}
     {{moveForm.csrf_token}}
     <div class="row mb-3">
-        {{moveForm.customer.label(class="col-12")}}
-        {{moveForm.customer(class="col-12 form-control")}}
+        <div class="col">
+            {{moveForm.customer.label(class_="col-12")}}
+            {{moveForm.customer(class="col-12 form-select", **{"hx-get":url_for('locations'), "hx-target":"#pickup", "hx-swap":"innerHTML" }) }}
+        </div>
     </div>
     <div class="row mb-3">
         <div class="col-6">
@@ -32,7 +34,7 @@
     <div  class="row justify-content-center" style="margin-bottom: 10px;">
         <div class="col-12">
             {{moveForm.delivery.label(class="col-12")}}
-            {{moveForm.delivery(class="col-12 form-control")}}
+            <div id="delivery-clone"></div>
         </div>
     </div>
     <div  class="row justify-content-center" style="margin-bottom: 10px;">
@@ -53,3 +55,23 @@
         </div>
     </div>
 </form>
+<script>
+    htmx.on("#customer", "htmx:before-request", function(elt) {
+    if (document.getElementById('customer').value == "add") {
+        elt.preventDefault()
+        openNewCustomerModal()
+    }
+    })
+    htmx.on("#customer", "htmx:after-request", function() {
+        copynode();
+    })
+
+    function copynode() {
+        const node = document.getElementById("pickup")
+        const target = document.getElementById("delivery-clone")
+        const clonednode = node.cloneNode(true)
+        clonednode.id = "delivery"
+        clonednode.name = "delivery"
+        target.appendChild(clonednode)
+    }
+</script>

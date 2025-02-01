@@ -20,8 +20,6 @@ class Equipment:
     def update(self):
         pass
 
-
-
 class Reservations:
     def __init__(self, start_date, customer, location, requestor, contact, purchase_order, items=[]):
         self.start_date = start_date
@@ -88,3 +86,24 @@ class Customers:
         pass
     def get_reservations(self):
         pass
+
+def get_customers_select():
+    doc_list = []
+    doc_list.append(('add', '+ New Customer'))
+    docs = db.collection('customerList').stream()
+    for doc in docs:
+        doc_data = {}
+        doc_data['id'] = doc.id
+        doc_data['name'] = doc._data['name']
+        formedData = (doc_data['id'], doc_data['name'])
+        doc_list.append(formedData)
+    doc_list.sort(key=lambda x: x[1])
+    doc_list.insert(0,('', 'Select Customer'))
+    return doc_list
+
+def get_locations_select(customerID=None):
+    if customerID != None:
+        pass
+    return None
+
+   

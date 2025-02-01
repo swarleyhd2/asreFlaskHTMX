@@ -1,33 +1,44 @@
 <form id="pills-rental" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-rental-tab" method="post" hx-post="{{url_for('newRental')}}" hx-swap="outerHTML" >
     <div class="row mb-3">
-        {{form.customer.label(class="col-12")}}
-        {{form.customer(class="col-12 form-control", **{"hx-get":"/locations", "hx-target":"#rental-location"})}}
+        <div class="col">
+            {{form.customer.label(class_="col-12")}}
+            {{form.customer(class="col-12 form-select", **{"hx-get":url_for('locations'),"hx-target":"#rental-location", "hx-swap":"innerHTML" }) }}
+        </div>
+        </div>
     </div> 
-    <select class="form-select mb-3" id="rental-location" onchange="openNewLocationModal()">
-        <option selected value="">Select Location</option>
-        <option value="add">+ New Location</option>
-    </select>
-    <div class="equipmentsection" hx-get="{{url_for('equipmentTypeSection')}}" hx-swap="innerHTML" hx-trigger="load"></div>
-
+    <div class="row mb-3">
+        <div class="col">
+            {{form.location.label(class="col-12")}}
+            <select class="form-select mb-3" id="rental-location" onchange="openNewLocationModal()">
+                <option selected value="">Select Location</option>
+                <option value="add">+ New Location</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="equipmentsection" hx-get="{{url_for('equipmentTypeSection')}}" hx-swap="innerHTML" hx-trigger="load"></div>
+    </div>
     <button type="button" class="btn btn-outline-secondary" hx-target=".equipmentsection" hx-swap="beforeend" hx-get="{{url_for('equipmentTypeSection')}}">+ Add Equipment</button>
     <hr>
-    <div class="input-group mb-3">
-        <label for="startdate" class="input-group-text">Start Date</label>
-        <input type="date" class="form-control" id="startdate" required>
+    <div class="row mb-3">
+        <div class="col">
+            {{form.start_date.label(class="col-12")}}
+            {{form.start_date (class="form-control")}}
+        </div>
     </div>
     <div class="row mb-3">
         <div class="col">
-            <label for="delivery" class="form-label">Delivery</label>
+            {{form.delivery.label(class="col-12 form-label")}}
             <div class="input-group">
                 <span class="input-group-text">$</span>
-                <input type="text" class="form-control" id="delivery" placeholder="180" aria-label="Delivery Rate">
+                {{form.delivery (class="form-control", **{"aria-label":"Delivery Rate"})}}
             </div>
         </div>   
         <div class="col">
-            <label for="return" class="form-label">Return</label>
+            {{form.delivery_return.label(class="col-12 form-label")}}
             <div class="input-group">
                 <span class="input-group-text">$</span>
-                <input type="text" class="form-control" id="return" placeholder="180" aria-label="Return Rate">
+                {{form.delivery (class="form-control", **{"aria-label":"Return Rate"})}}
             </div>
         </div>
     </div>
@@ -35,15 +46,15 @@
     <div class="row mb-3" id="fuelSelection">
         <div class="col">
             <div class="form-check form-switch d-flex align-items-center">
-                <input class="form-check-input me-3" type="checkbox" role="switch" id="fuelswitch" checked>
-                <label class="form-check-label" for="fuelswitch">Fill on Return ($7.98/G)</label>
+                {{form.fill_on_return (class="form-check-input me-3", **{"role":"switch", "checked":"True"})}}
+                {{form.fill_on_return.label(class="form-check-label")}}
             </div>
         </div>
         <div class="col">
-            <label for="fuel" class="form-label">Fuel/Propane</label>
+            {{form.prepay_fuel.label(class="form-label")}}
             <div class="input-group">
                 <span class="input-group-text">$</span>
-                <input type="text" class="form-control" id="fuelprice" placeholder="0" aria-label="Fuel" disabled>
+                {{form.prepay_fuel (class="form-control", **{"aria-label":"Fuel", "disabled":"True"})}}
             </div>
         </div>
     </div>
@@ -51,27 +62,27 @@
     <div class="row mb-3">
         <div class="col mb-3">
             <div class="form-check form-switch d-flex align-items-center">
-                <input class="form-check-input me-3" type="checkbox" role="switch" id="environmentalswitch" checked>
-                <label class="form-check-label" for="environmentalswitch">Environmental Fee ($19)</label>
+                {{form.environmental (class="form-check-input me-3", **{"role":"switch", "checked":"True"})}}
+                {{form.environmental.label(class="form-check-label")}}
             </div>
         </div>
         <div class="col">
             <div class="form-check form-switch d-flex align-items-center">
-                <input class="form-check-input me-3" type="checkbox" role="switch" id="insuranceswitch">
-                <label class="form-check-label" for="insuranceswitch">Insurance 13% ()</label>
+                {{form.insurance (class="form-check-input me-3", **{"role": "switch"})}}
+                {{form.insurance.label(class="form-check-label")}}
             </div>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col">
-            <label for="notes" class="form-label" for="po">Purchase Order</label>
-            <input type="text" class="form-control" id="po" placeholder="Purchase Order"></text>
+            {{form.po.label(class="form-label")}}
+            {{form.po (class="form-control", **{"placeholder": "Purchase Order"})}}
         </div>
     </div>
     <div class="row mb-3">
         <div class="col">
-            <label for="notes" class="form-label">Notes</label>
-            <textarea class="form-control" id="notes" rows="3"></textarea>
+            {{form.notes.label(class="form-label")}}
+            {{form.notes (class="form-control", **{"rows": "3"})}}
         </div>
     </div>
     <div class="mb-3 row justify-content-center">   
@@ -88,4 +99,10 @@
             document.getElementById('fuelprice').removeAttribute('disabled')
         }
         })
+    htmx.on("#customer", "htmx:before-request", function(elt) {
+        if (document.getElementById('customer').value == "add") {
+            elt.preventDefault()
+            openNewCustomerModal()
+        }
+    })
 </script>
