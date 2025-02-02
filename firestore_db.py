@@ -106,4 +106,16 @@ def get_locations_select(customerID=None):
         pass
     return None
 
+def get_reservations():
+    docs = db.collection('reservations').stream()
+    doc_list = []
+    for doc in docs:
+        doc_data = doc.to_dict()
+        doc_data['id'] = doc.id
+        doc_data['doc_data'] = doc._data
+        doc_list.append(doc_data)
+
+    return doc_list
+
+
    

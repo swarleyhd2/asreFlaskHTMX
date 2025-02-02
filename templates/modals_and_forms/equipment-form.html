@@ -1,6 +1,7 @@
-<div>
+<div class="equipment-section card p-3 mb-3">
     <div class="row mb-3 equipment-row">
         <div class="col-8">
+            <label for="equipment" class="form-label">Equipment Type</label>
             <select class="form-select" id="equipment">
                 <option selected value="">Select Equipment Type</option>
                 {% for key, value in equipmentTypes.items() %}
@@ -9,16 +10,18 @@
             </select>
         </div>
         <div class="col">
+            <label for="quantity" class="form-label">Qty</label>
             <select class="form-select" id="quantity">
-                <option selected value="">Qty</option>
                 {% for i in range(1,11) %}
                     <option value="{{i}}">{{i}}</option>
                 {% endfor %}
             </select>
         </div>
     </div>
-    <h2>Rates</h2>
-    <div class="row mb-3">
+    <div class="row">
+        <div class="col">Rates</div>
+    </div>
+    <div class="row">
         <div class="col input-group">
             <span class="input-group-text d-none d-md-block">$</span>
             <input type="text" class="form-control" placeholder="Day" aria-label="Day Rate">

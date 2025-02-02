@@ -8,14 +8,7 @@
     
 }</style>
 <div class="container">
-    <h2>New Order</h2>
-    <!-- <select class="form-select mb-3" id="customer" onchange="customerChange()">
-        <option selected value="">Select Customer</option>
-        <option value="add">+ New Customer</option>
-        {% for key, value in customers.items() %}
-            <option value="{{key}}">{{value}}</option>
-        {% endfor %}
-    </select> -->
+    <h2 class="text-primary">New Order</h2>
     <div id="tabs-container">
         <ul class="nav nav-pills justify-content-center mb-3" id="pill-tab" role="tablist" hx-target="#tab-contents" hx-on:htmx-after-on-load="formChange(event.target)">
             <li class="nav-item" role="presentation">

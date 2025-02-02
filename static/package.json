@@ -12,6 +12,7 @@
     "webpack": "^5.97.1"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
     "sortablejs": "^1.15.6"
   }
 }

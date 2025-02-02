@@ -1,6 +1,7 @@
 <form id="pills-rental" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-rental-tab" method="post" hx-post="{{url_for('newRental')}}" hx-swap="outerHTML" >
     <div class="row mb-3">
         <div class="col">
+            {{form.csrf_token}}
             {{form.customer.label(class_="col-12")}}
             {{form.customer(class="col-12 form-select", **{"hx-get":url_for('locations'),"hx-target":"#rental-location", "hx-swap":"innerHTML" }) }}
         </div>
@@ -85,6 +86,16 @@
             {{form.notes (class="form-control", **{"rows": "3"})}}
         </div>
     </div>
+    {% if form.errors %}
+        <div class="row">
+            <ul class="errors">
+            {% for error in form.errors %}
+            <span class="badge text-bg-danger">Error</span>
+            <li class="text-danger">{{error}}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     <div class="mb-3 row justify-content-center">   
         <div class="col">
             <button type="submit" class="btn btn-primary col-12">Submit</button>
@@ -97,6 +108,7 @@
             document.getElementById('fuelprice').setAttribute('disabled', true)
         }else {
             document.getElementById('fuelprice').removeAttribute('disabled')
+            document.getElementById('fuelprice').value = "0"
         }
         })
     htmx.on("#customer", "htmx:before-request", function(elt) {

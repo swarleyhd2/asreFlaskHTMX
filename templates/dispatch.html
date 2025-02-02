@@ -9,23 +9,27 @@
 <script src="{{url_for('static', filename='node_modules/sortablejs/sortable.min.js')}}"></script>
 {% endblock %}
 {% block content %}
-<div id="container" class="justify-content-evenly">
+<div id="dispatch-container" class="row justify-content-evenly" hx-get="{{url_for('dispatchItems')}}" hx-trigger="load" hx-swap-oob="true" hx-select="#column-pending" hx-select-oob="column-dispatched" hx-target="#column-pending">
     
-    <form class="col card sortable" id="pending" hx-post="{{url_for('dispatchItems')}}" hx-trigger="end" style="min-height: 80vh;">
-        <h2>Reserved</h2>
+    <form class="col card container justify-content-space-evenly " id="pending" style="min-height: 90vh;" hx-swap-oob="true">
+        <div class="row">
+            <h2>Pending</h2>
+            <div class="htmx-indicator">Updating...</div>
+        </div>
+        <div id="column-pending" hx-swap-oob="true"></div>
+    </form>
+    <form class="col card">
+        <h2>Scheduled</h2>
         <div class="htmx-indicator">Updating...</div>
-        {% for key, value in samples.items() %}
-            <div><input type='hidden' name='item' value='{{value}}'/>{{key}}</div>
-        {% endfor %}
+        <div id="column-dispatched" hx-swap-oob="true"></div>
     </form>
-    <form class="col card sortable" id="dispatch">
-        todays todo
-    </form>
-    <form class="col card sortable" id="onrent">
-        on rent
+    <form class="col card" id="onrent">
+        <h2>On Rent</h2>
+        <div class="htmx-indicator">Updating...</div>
+        <div id="column-onrent" hx-swap-oob="true"></div>
     </form>
 </div>
-<script>
+<!-- <script>
     htmx.onLoad(function() {
         var sortables = document.querySelectorAll('.sortable');
         for(var i  = 0; i < sortables.length; i++) {
@@ -47,5 +51,5 @@
             });
         }
     })
-</script>
+</script> -->
 {% endblock %}

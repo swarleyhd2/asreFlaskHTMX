@@ -1,0 +1,68 @@
+
+    {% for data in fdata %}
+        {% if data.state == 'pending'%}
+        <div class="row justify-content-center mb-3" id="column-{{data.state}}">
+            <div class="col-10 card pb-3" style="min-height: 200px;">
+                <div>{{data.name}}</div><div>{{data.resType}}</div>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Delete</a></li>
+                        <li><a class="dropdown-item" href="#">Place On Rent</a></li>
+                    </ul>
+                </div>
+                <div>{{data.startDate}}</div>
+                {{data.equipmenttype}}
+                {{data.address}}
+                {{data.contact}}
+                <label for="unit" class="form-label">Unit Select</label>
+                <select id="unit" class="form-select" aria-label="Unit"></select>
+                <label for="driver" class="form-label">Driver Select</label>
+                <select id="driver" class="form-select" aria-label="Driver"></select>
+                <label for="notes" class="form-label"> Delivery Notes</label>
+                <textarea class="form-control mb-3" id="notes" rows="3"></textarea>
+                <button type="submit" class="btn btn-success">Dispatch-pending</button>
+            </div>
+        </div>
+        {% elif data.state == 'dispatched' %}
+        <div class="row justify-content-center mb-3" id="column-{{data.state}}">
+            <div class="col-10 card pb-3" style="min-height: 200px;">
+                <div>{{data.name}}</div><div>{{data.resType}}</div>
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Delete</a></li>
+                        <li><a class="dropdown-item" href="#">Revert To Pending</a></li>
+                        <li><a class="dropdown-item" href="#">Place On Rent</a></li>
+                    </ul>
+                <div>{{data.startDate}}</div>
+                {{data.equipmenttype}}
+                {{data.address}}
+                {{data.contact}}
+                <label for="unit" class="form-label">Unit Select</label>
+                <select id="unit" class="form-select" aria-label="Unit"></select>
+                <label for="driver" class="form-label">Driver Select</label>
+                <select id="driver" class="form-select" aria-label="Driver"></select>
+                <label for="notes" class="form-label"> Delivery Notes</label>
+                <textarea class="form-control mb-3" id="notes" rows="3"></textarea>
+                <button type="submit" class="btn btn-success">Dispatch-dispatched</button>
+            </div>
+        </div>
+        {% elif data.state == 'onrent' %}
+        <div class="row justify-content-center mb-3" id="column-{{data.state}}">
+            <div class="col-10 card pb-3" style="min-height: 200px;">
+                <div>{{data.name}}</div><div>{{data.resType}}</div>
+                <div>{{data.startDate}}</div>
+                {{data.equipmenttype}}
+                {{data.address}}
+                {{data.contact}}
+                <label for="unit" class="form-label">Unit Select</label>
+                <select id="unit" class="form-select" aria-label="Unit"></select>
+                <label for="driver" class="form-label">Driver Select</label>
+                <select id="driver" class="form-select" aria-label="Driver"></select>
+                <label for="notes" class="form-label"> Delivery Notes</label>
+                <textarea class="form-control mb-3" id="notes" rows="3"></textarea>
+                <button type="submit" class="btn btn-success">Dispatch</button>
+            </div>
+        </div>
+        {% endif %}
+    {%endfor%}

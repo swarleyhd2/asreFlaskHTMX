@@ -11,7 +11,7 @@ from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
 from uuid import uuid4 as uuid
 from form_select_options import equipmentTypes, customers
-from firestore_db import Equipment, Customers, Moves, Reservations, Repairs, Rentals, get_locations_select
+from firestore_db import Equipment, Customers, Moves, Reservations, Repairs, Rentals, get_locations_select, get_reservations
 from forms import moveForm, rentalForm, repairForm, newCustomerForm, newLocationForm
 
 
@@ -116,11 +116,7 @@ def orderEvent():
 @app.route("/dispatch")
 #@protected
 def dispatch():
-    sample = {"test":1,
-            "test2":2,
-            "test3":3,
-            "test4":4}
-    return render_template('dispatch.html', samples=sample)
+    return render_template('dispatch.html')
 #Sales--------------------------------------------
 @app.route("/settings")
 #@protected
@@ -131,22 +127,15 @@ def settings():
 #@protected
 def orders():
 
-    move = moveForm()
-    return render_template('orders.html', equipmentTypes=equipmentTypes, customers=customers, moveForm = move)
+    return render_template('orders.html', equipmentTypes=equipmentTypes, locationform = newLocationForm())
 
 @app.route("/newrental", methods=['POST','GET']) 
 def newRental():
     form = rentalForm()
-    if request.method == 'POST':
-        if form.validate():
-            try:
-                print('test working')
-                return {'status': 'success'}
-            except Exception as e:
-                print(e)
-                return {'error': e}
-    else:
-        return render_template('modals_and_forms/rental-form.html', equipmentTypes=equipmentTypes, form=form)
+    if request.method == 'POST' and form.validate():
+            print('test working')
+            
+    return render_template('modals_and_forms/rental-form.html', equipmentTypes=equipmentTypes, form=form)
             
 @app.route("/newrepair", methods=['POST','GET'])         
 def newRepair():
@@ -180,32 +169,23 @@ def newMove():
 @app.route("/newcustomer")             
 def submitNewCustomer():
     if request.method == 'POST':
-        formData = request.form
-        if formData['formType'] == 'customer':
-            try:
-                print('test working')
-                return {'status': 'success'}
-            except Exception as e:
-                return {'error': e}
+        pass
+    return render_template('modals_and_forms/newcustomer.html', customerform = newCustomerForm())
                   
 
 @app.route("/equipmenttypesection")
 def equipmentTypeSection():
     return render_template('modals_and_forms/equipment-form.html', equipmentTypes=equipmentTypes)
 
-@app.route("/dispatchitems", methods=['POST', 'GET'])
+@app.route("/dispatchitems")
 def dispatchItems():
-
-    if request.method == 'POST':
-        
-        return render_template("<div>hi</div>")
-    else:
-        return render_template("")
+        res = get_reservations()
+        return render_template("modals_and_forms/dispatch-items.html", fdata=res)
 
 @app.route("/locations" , methods=['POST', 'GET'])
 def locations():
     if request.method == 'POST':
-        return render_template("newlocation.html")
+        return render_template("modals_and_forms/newlocation.html", newlocationform = newLocationForm())
     
     elif request.method == 'GET':
         locations = get_locations_select(request.args.get('customer'))
