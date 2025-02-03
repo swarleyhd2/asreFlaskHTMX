@@ -1,34 +1,58 @@
-<div class="modal" tabindex="-1" id="newlocationmodal" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">New Location</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="locationSelectionChange()"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <input type="hidden" id="customerid" value="">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Jobsite</label>
-                        <input type="text" class="form-control" id="name">
+<div class="modal-dialog modal-dialog-centered" tabindex="-1" id="newlocationmodal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">New Location for</h5><h5 id="location-customer-name"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="locationSelectionChange()"></button>
+        </div>
+        <div class="modal-body">
+            <form id="newlocationform" class="needs-validation" hx-post="{{url_for('locationModal')}}" hx-target="#newlocationmodal" hx-swap="outerHTML">
+                {{newlocationform.csrf_token}}
+                <div class="invalid-feedback">
+                    Server error, please refresh and try again.
+                  </div>
+                {{newlocationform.customer}}
+                <div class="invalid-feedback">
+                    A valid customer needs to be selected before adding a location.
+                  </div>
+                <div class="mb-3">
+                    {{newlocationform.jobsite.label(class="col-12 form-label")}}
+                    {{newlocationform.jobsite(class="col-12 form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{newlocationform.address.label(class="col-12 form-label")}}
+                    {{newlocationform.address(class="col-12 form-control")}}
+                    <div class="invalid-feedback">
+                        Please enter a valid address.
+                      </div>
+                </div>
+                <div class="mb-3">
+                    {{newlocationform.city.label(class="col-12 form-label")}}
+                    {{newlocationform.city(class="col-12 form-control")}}
+                    <div class="invalid-feedback">
+                        Please provide a valid city.
+                      </div>
+                </div>
+                <div class="mb-3">
+                    {{newlocationform.state.label(class="col-12 form-label")}}
+                    {{newlocationform.state(class="col-12 form-control")}}
+                    <div class="invalid-feedback">
+                        Please select a valid state.
+                      </div>
+                </div>
+                {% if newlocationform.errors %}
+                    <div class="row">
+                        <ul class="errors">
+                        <span class="badge text-bg-danger">Error</span>
+                        {% for error in newlocationform.errors %}
+                        <li class="text-danger">{{error}}</li>
+                        {% endfor %}
+                        </ul>
                     </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address">
-                    </div>
-                    <div class="mb-3">
-                        <label for="city" class="form-label">City</label>
-                        <input type="text" class="form-control" id="city">
-                    </div>
-                    <div class="mb-3">
-                        <label for="state" class="form-label">State</label>
-                        <input type="text" class="form-control" id="state">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="saveLocation()">Save</button>
-            </div>
+                {% endif %}
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="newlocationform" class="btn btn-primary">Save</button>
         </div>
     </div>
 </div>

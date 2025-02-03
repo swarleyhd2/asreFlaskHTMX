@@ -3,17 +3,21 @@
         <div class="col">
             {{form.csrf_token}}
             {{form.customer.label(class_="col-12")}}
-            {{form.customer(class="col-12 form-select", **{"hx-get":url_for('locations'),"hx-target":"#rental-location", "hx-swap":"innerHTML" }) }}
+            {{form.customer(class="col-12 form-select", **{"hx-get":url_for('locations'),"hx-target":"#location-select-here", "hx-swap":"innerHTML" , "onchange":"customerchange()"}) }}
+            <button hx-get="{{url_for('customerModal')}}" hx-target="#modals-here" hx-trigger="click" hx-swap="innerHTML" data-bs-toggle="modal" data-bs-target="#modals-here" hidden id="newcustomerbutton">click</button>
         </div>
         </div>
     </div> 
     <div class="row mb-3">
         <div class="col">
             {{form.location.label(class="col-12")}}
-            <select class="form-select mb-3" id="rental-location" onchange="openNewLocationModal()">
-                <option selected value="">Select Location</option>
-                <option value="add">+ New Location</option>
-            </select>
+            <div id="location-select-here">
+                <select class="form-select mb-3" id="rental-location" onchange="openNewLocationModal()">
+                    <option selected value="">Select Location</option>
+                    <option value="add" id="newlocationoption" hidden>+ New Location</option>
+                </select>
+                <button hx-get="{{url_for('locationModal')}}" hx-target="#modals-here" hx-trigger="click" hx-swap="innerHTML" hx-include="#customer-select" data-bs-toggle="modal" data-bs-target="#modals-here" hidden id="newlocationbutton">click</button>
+            </div>
         </div>
     </div>
     <div class="row mb-3">
@@ -117,4 +121,21 @@
             openNewCustomerModal()
         }
     })
+    function openNewLocationModal() {
+        if (document.getElementById('rental-location').value == "add") {
+            document.getElementById('newlocationbutton').click()
+            document.getElementById('rental-location').value = ""
+        }
+    }
+    function customerchange() {
+        if (document.getElementById('customer').value == "add") {
+            document.getElementById('newcustomerbutton').click()
+        }
+        else if (document.getElementById('customer').value != "") {
+            document.getElementById("newlocationoption").removeAttribute("hidden")
+        }
+        else if (document.getElementById('customer').value == "") {
+            document.getElementById("newlocationoption").setAttribute("hidden", true)
+        }
+    }
 </script>

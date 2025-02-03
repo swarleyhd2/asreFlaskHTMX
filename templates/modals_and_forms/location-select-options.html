@@ -1,7 +1,11 @@
-<option selected value="">Select Location</option>
-<option value="add">+ New Location</option>
-{% if locations %}
-{% for location in locations %}
-<option>{{location.name}}</option>
-{% endfor %}
-{% endif %}
+
+<select class="form-select mb-3" id="rental-location" onchange="openNewLocationModal()">
+    <option selected value="">Select Location</option>
+    <option value="add">+ New Location</option>
+    {% if locations %}
+    {% for location in locations %}
+    <option>{{location.name}}</option>
+    {% endfor %}
+    {% endif %}
+</select>
+<button hx-get="{{url}}" hx-target="#modals-here" hx-trigger="click" hx-swap="innerHTML" hx-include="#customer-select" data-bs-toggle="modal" data-bs-target="#modals-here" hidden id="newlocationbutton">click</button>

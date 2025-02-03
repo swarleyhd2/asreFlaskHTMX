@@ -87,6 +87,10 @@ class Customers:
     def get_reservations(self):
         pass
 
+def get_customer_data(customerID): 
+    doc = db.collection('customerList').document(customerID).get()
+    return doc.to_dict()
+
 def get_customers_select():
     doc_list = []
     doc_list.append(('add', '+ New Customer'))
@@ -103,7 +107,17 @@ def get_customers_select():
 
 def get_locations_select(customerID=None):
     if customerID != None:
-        pass
+        locationList = []
+        customerData = db.collection('customerList').document(customerID).get().to_dict()
+        customerName = customerData['name']
+        try:
+            for data in customerData['locations']:
+                locationList.append(data)
+        except:
+            pass
+        return locationList, customerName
+
+
     return None
 
 def get_reservations():
@@ -116,6 +130,24 @@ def get_reservations():
         doc_list.append(doc_data)
 
     return doc_list
+
+def create_location(data):
+    pass
+
+def create_customer(data):
+    pass
+
+def create_move(data):
+    pass
+
+def create_rental(data):
+    pass
+
+def create_repair(data):
+    pass
+
+def create_reservation(data):
+    pass
 
 
    

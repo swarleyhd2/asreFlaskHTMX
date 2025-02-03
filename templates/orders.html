@@ -24,9 +24,26 @@
         <div class="tab-contents" id="tab-contents" role="tabpanel" hx-get="{{url_for('newRental')}}" hx-trigger="load"> 
         </div>
     </div>
-{% include 'modals_and_forms/newlocation.html' %}
-{% include 'modals_and_forms/newcustomer.html' %}
-
+    <div id="modals-here"
+        class="modal fade" 
+        tabindex="-1" 
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <p>Loading...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="{{url_for('static', filename='js/orders.js')}}"></script>
+
 {% endblock %}

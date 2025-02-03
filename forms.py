@@ -6,20 +6,17 @@ from datetime import date
 
 
 class customerSelect(FlaskForm):
-    customer = SelectField('Customer', choices=get_customers_select())
+    customer = SelectField('Customer', choices=get_customers_select(), id="customer-select")
 
-class newCustomer(FlaskForm):
-    name = StringField('Name')
-
-class newLocation(FlaskForm):
-    customer = HiddenField('customerID', [validators.DataRequired()])
+class newLocationForm(FlaskForm):
+    customer = HiddenField('customerID', [validators.DataRequired(message="Please select a customer before adding a location")], id="new-location-customer-field")
     jobsite = StringField('Jobsite')
-    address = StringField('Address', [validators.DataRequired()])
-    city = StringField('City', [validators.DataRequired()])
+    address = StringField('Address', [validators.DataRequired(message="Please enter an address")])
+    city = StringField('City', [validators.DataRequired(message= "Please enter a city")])
     state = SelectField('State', choices=['CT', 'MA', 'RI', 'NY'], default='CT')
 
 class moveForm(FlaskForm):
-    customer = SelectField('Customer', choices=get_customers_select())
+    customer = SelectField('Customer', choices=get_customers_select(), id="customer")
     pickup = SelectField('Pickup', id="pickup", choices=get_locations_select(), validate_choice=False)
     delivery = SelectField('Delivery', id="delivery", choices=get_locations_select(), validate_choice=False)
     equipment = StringField('Equipment')
@@ -35,7 +32,7 @@ class equipmentTypeForm(Form):
     month_rate = IntegerField('4 Week Rate')
 
 class rentalForm(FlaskForm):
-    customer = SelectField('Customer', id="customer", choices=get_customers_select(), validate_choice=False)
+    customer = SelectField('Customer', id="customer", choices=get_customers_select())
     location = SelectField('Location', choices=get_locations_select(), validate_choice=False)
     equipment = FieldList(FormField(equipmentTypeForm), min_entries=1)
     start_date = DateField('Start Date', id="startdate", default=date.today)
@@ -59,13 +56,5 @@ class newCustomerForm(FlaskForm):
     phone = StringField('Phone')
     email = StringField('Email')
 
-class newLocationForm(FlaskForm):
-    name = StringField('Name')
-    address = StringField('Address')
-    address2 = StringField('Address2')
-    city = StringField('City')
-    state = StringField('State')
-    zip = StringField('Zip')
-    customerName = StringField('Customer Name')
 
 

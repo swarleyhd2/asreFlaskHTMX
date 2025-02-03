@@ -1,6 +1,6 @@
 import os
 from functools import wraps
-from flask import Flask, render_template, request, jsonify, abort, redirect, make_response, Response
+from flask import Flask, render_template, request, jsonify, abort, redirect, make_response, Response, url_for
 from flask_login import LoginManager, login_user
 from firebase_admin import auth, exceptions
 from firebase_init import firebase_app
@@ -11,19 +11,14 @@ from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
 from uuid import uuid4 as uuid
 from form_select_options import equipmentTypes, customers
-from firestore_db import Equipment, Customers, Moves, Reservations, Repairs, Rentals, get_locations_select, get_reservations
+from firestore_db import Equipment, Customers, Moves, Reservations, Repairs, Rentals, get_locations_select, get_reservations, get_customer_data, create_customer, create_location, create_move, create_rental, create_repair, create_reservation
 from forms import moveForm, rentalForm, repairForm, newCustomerForm, newLocationForm
 
-
-
 load_dotenv()
-
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
-
-
 
 auth_client = AuthClient(
     client_id = os.getenv('CLIENT_ID'),
@@ -127,7 +122,7 @@ def settings():
 #@protected
 def orders():
 
-    return render_template('orders.html', equipmentTypes=equipmentTypes, locationform = newLocationForm())
+    return render_template('orders.html', equipmentTypes=equipmentTypes, newlocationform = newLocationForm(), newcustomerform = newCustomerForm())
 
 @app.route("/newrental", methods=['POST','GET']) 
 def newRental():
@@ -165,12 +160,6 @@ def newMove():
                 return {'error': e}
     else:
         return render_template('modals_and_forms/move-form.html', moveForm=form)
-            
-@app.route("/newcustomer")             
-def submitNewCustomer():
-    if request.method == 'POST':
-        pass
-    return render_template('modals_and_forms/newcustomer.html', customerform = newCustomerForm())
                   
 
 @app.route("/equipmenttypesection")
@@ -182,14 +171,39 @@ def dispatchItems():
         res = get_reservations()
         return render_template("modals_and_forms/dispatch-items.html", fdata=res)
 
-@app.route("/locations" , methods=['POST', 'GET'])
+@app.route("/locations" , methods=['GET'])
 def locations():
-    if request.method == 'POST':
-        return render_template("modals_and_forms/newlocation.html", newlocationform = newLocationForm())
-    
-    elif request.method == 'GET':
-        locations = get_locations_select(request.args.get('customer'))
-        return render_template("modals_and_forms/location-select-options.html", locations=locations)
+    customerID = request.args.get('customer')
+    locations = get_locations_select(customerID)
+    modalURL = url_for('locationModal', customer=customerID)
+    return render_template("modals_and_forms/location-select-options.html", locations=locations, url=modalURL)
+
+@app.route("/locationmodal", methods=['POST', 'GET'])
+def locationModal():
+    locationModalForm = newLocationForm()
+
+    if request.method == "GET":
+        customerID = request.args.get('customer')
+        locationModalForm.customer.data = customerID
+
+    if request.method == "POST" and locationModalForm.validate():
+        formData = {
+            'customer': locationModalForm.customer.data,
+            'jobsite': locationModalForm.jobsite.data,
+            'address': locationModalForm.address.data,
+            'city': locationModalForm.city.data,
+            'state': locationModalForm.state.data,
+        }
+        create_location(formData)
+        print('location saved')
+    return render_template("modals_and_forms/newlocation.html", newlocationform = locationModalForm)
+        
+@app.route("/customermodal", methods=['POST', 'GET'])
+def customerModal():
+    customerModalForm = newCustomerForm()
+    if request.method == "POST" and customerModalForm.validate():
+        print('customer saved')
+    return render_template("modals_and_forms/newcustomer.html", newcustomerform = customerModalForm)
 
 
 
