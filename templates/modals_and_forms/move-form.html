@@ -12,7 +12,7 @@
     <div class="row mb-3">
         <div class="col">
             {{moveForm.customer.label(class_="col-12")}}
-            {{moveForm.customer(class="col-12 form-select", **{"hx-get":url_for('locations'), "hx-target":"#pickup", "hx-swap":"innerHTML" }) }}
+            {{moveForm.customer(class="col-12 form-select", **{"hx-get":url_for('locations'),"hx-target":"#location-select-here", "hx-swap":"innerHTML" , "onchange":"customerchange()"}) }}
         </div>
     </div>
     <div class="row mb-3">
@@ -27,14 +27,23 @@
     </div>
     <div class="row justify-content-center" style="margin-bottom: 10px;">
         <div class="col-12">
-            {{moveForm.pickup.label(class="col-12")}}
-            {{moveForm.pickup(class="col-12 form-control")}}
+            <div id="location-select-here">
+                <select class="form-select mb-3" id="pickup-location" onchange="openNewLocationModal()">
+                    <option selected value="">Select Location</option>
+                    <option value="add" id="newlocationoption" hidden>+ New Location</option>
+                </select>
+                <button hx-get="{{url_for('locationModal')}}" hx-target="#modals-here" hx-trigger="click" hx-swap="innerHTML" hx-include="#customer-select" data-bs-toggle="modal" data-bs-target="#modals-here" hidden id="newlocationbutton">click</button>
+            </div>
         </div>
     </div>
     <div  class="row justify-content-center" style="margin-bottom: 10px;">
         <div class="col-12">
-            {{moveForm.delivery.label(class="col-12")}}
-            <div id="delivery-clone"></div>
+            <div id="location-select-here">
+                <select class="form-select mb-3" id="dropoff-location" onchange="openNewLocationModal()">
+                    <option selected value="">Select Location</option>
+                    <option value="add" id="newlocationoption" hidden>+ New Location</option>
+                </select>
+            </div>
         </div>
     </div>
     <div  class="row justify-content-center" style="margin-bottom: 10px;">
@@ -57,21 +66,26 @@
 </form>
 <script>
     htmx.on("#customer", "htmx:before-request", function(elt) {
-    if (document.getElementById('customer').value == "add") {
-        elt.preventDefault()
-        openNewCustomerModal()
+        if (document.getElementById('customer').value == "add") {
+            elt.preventDefault()
+            openNewCustomerModal()
+        }
+    })
+    function openNewLocationModal() {
+        if (document.getElementById('pickup-location').value == "add" || document.getElementById('dropoff-location').value == "add") {
+            document.getElementById('newlocationbutton').click()
+            document.getElementById('pickup-location').value = ""
+        }
     }
-    })
-    htmx.on("#customer", "htmx:after-request", function() {
-        copynode();
-    })
-
-    function copynode() {
-        const node = document.getElementById("pickup")
-        const target = document.getElementById("delivery-clone")
-        const clonednode = node.cloneNode(true)
-        clonednode.id = "delivery"
-        clonednode.name = "delivery"
-        target.appendChild(clonednode)
+    function customerchange() {
+        if (document.getElementById('customer').value == "add") {
+            document.getElementById('newcustomerbutton').click()
+        }
+        else if (document.getElementById('customer').value != "") {
+            document.getElementById("newlocationoption").removeAttribute("hidden")
+        }
+        else if (document.getElementById('customer').value == "") {
+            document.getElementById("newlocationoption").setAttribute("hidden", true)
+        }
     }
 </script>

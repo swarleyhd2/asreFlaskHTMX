@@ -1,5 +1,6 @@
 from firebase_init import db
-
+from firebase_admin.firestore import ArrayUnion
+from flask import jsonify
 class Equipment:
     def __init__(self, unit, make, model, year, category, serial, last_pm='1/1/2000', hours=0, status='down', last_location='none', service_history=[], rental_history=[]):
         self.unit = unit
@@ -107,14 +108,9 @@ def get_customers_select():
 
 def get_locations_select(customerID=None):
     if customerID != None:
-        locationList = []
         customerData = db.collection('customerList').document(customerID).get().to_dict()
         customerName = customerData['name']
-        try:
-            for data in customerData['locations']:
-                locationList.append(data)
-        except:
-            pass
+        locationList = customerData.get('locations', [])
         return locationList, customerName
 
 
@@ -132,7 +128,14 @@ def get_reservations():
     return doc_list
 
 def create_location(data):
-    pass
+    try:
+        fullAddress = f'{data["jobsite"]}, {data["address"]}, {data["city"]}, {data["state"]}'
+        db.collection('customerList').document(data['customer']).update({'locations':ArrayUnion([fullAddress])})
+        resp = jsonify({'status': 'success'}, 200)   
+    except Exception as e:
+        resp = jsonify({'error': e}, 500)
+    return resp
+
 
 def create_customer(data):
     pass

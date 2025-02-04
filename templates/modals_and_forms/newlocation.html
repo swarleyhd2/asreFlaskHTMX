@@ -2,10 +2,10 @@
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">New Location for</h5><h5 id="location-customer-name"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="locationSelectionChange()"></button>
+            <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="locationSelectionChange()"></button>
         </div>
         <div class="modal-body">
-            <form id="newlocationform" class="needs-validation" hx-post="{{url_for('locationModal')}}" hx-target="#newlocationmodal" hx-swap="outerHTML">
+            <form id="newlocationform" class="needs-validation" hx-post="{{url_for('locationModal')}}" hx-target="#newlocationmodal" hx-swap="outerHTML" hx-on::after-request="if(event.detail.successful) document.getElementById('close-modal').click()">
                 {{newlocationform.csrf_token}}
                 <div class="invalid-feedback">
                     Server error, please refresh and try again.

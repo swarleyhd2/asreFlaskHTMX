@@ -122,7 +122,7 @@ def settings():
 #@protected
 def orders():
 
-    return render_template('orders.html', equipmentTypes=equipmentTypes, newlocationform = newLocationForm(), newcustomerform = newCustomerForm())
+    return render_template('orders.html')
 
 @app.route("/newrental", methods=['POST','GET']) 
 def newRental():
@@ -174,9 +174,9 @@ def dispatchItems():
 @app.route("/locations" , methods=['GET'])
 def locations():
     customerID = request.args.get('customer')
-    locations = get_locations_select(customerID)
+    locations, customerName = get_locations_select(customerID)
     modalURL = url_for('locationModal', customer=customerID)
-    return render_template("modals_and_forms/location-select-options.html", locations=locations, url=modalURL)
+    return render_template("modals_and_forms/location-select-options.html", locations=locations, url=modalURL, customer=customerName)
 
 @app.route("/locationmodal", methods=['POST', 'GET'])
 def locationModal():
@@ -195,7 +195,7 @@ def locationModal():
             'state': locationModalForm.state.data,
         }
         create_location(formData)
-        print('location saved')
+        return ('ok', 200)
     return render_template("modals_and_forms/newlocation.html", newlocationform = locationModalForm)
         
 @app.route("/customermodal", methods=['POST', 'GET'])

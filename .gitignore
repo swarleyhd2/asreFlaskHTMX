@@ -1,6 +1,7 @@
 /serviceaccountkey.json
 .env
 contacts.xlsx
+locations.xlsx
 /svcacct.json
 quickupload.py
 /static/node_modules

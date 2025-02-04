@@ -1,0 +1,38 @@
+connecticut_places = [
+    # Cities
+    "Bridgeport", "New Haven", "Stamford", "Hartford", "Waterbury",
+    "Norwalk", "Danbury", "New Britain", "Meriden", "Bristol",
+    "West Haven", "Milford", "Middletown", "Norwich", "Shelton",
+    "Torrington", "New London", "Ansonia", "Derby",
+
+    # Towns
+    "Andover", "Ashford", "Avon", "Barkhamsted", "Beacon Falls", "Berlin",
+    "Bethany", "Bethel", "Bethlehem", "Bloomfield", "Bolton", "Bozrah",
+    "Branford", "Brookfield", "Brooklyn", "Burlington", "Canaan",
+    "Canterbury", "Canton", "Chaplin", "Cheshire", "Chester", "Clinton",
+    "Colchester", "Colebrook", "Columbia", "Cornwall", "Coventry",
+    "Cromwell", "Danbury", "Darien", "Deep River", "Durham", "East Granby",
+    "East Haddam", "East Hampton", "East Hartford", "East Haven",
+    "East Lyme", "East Windsor", "Eastford", "Ellington", "Enfield",
+    "Essex", "Fairfield", "Farmington", "Franklin", "Glastonbury",
+    "Goshen", "Granby", "Greenwich", "Griswold", "Groton", "Guilford",
+    "Haddam", "Hamden", "Hampton", "Hartland", "Harwinton", "Hebron",
+    "Kent", "Killingly", "Killingworth", "Lebanon", "Ledyard", "Lisbon",
+    "Litchfield", "Lyme", "Madison", "Manchester", "Mansfield",
+    "Marlborough", "Middlebury", "Monroe", "Montville", "Morris",
+    "Naugatuck", "New Canaan", "New Fairfield", "New Hartford",
+    "Newington", "New Milford", "Newtown", "North Branford",
+    "North Canaan", "North Haven", "North Stonington", "Norfolk",
+    "Old Lyme", "Old Saybrook", "Orange", "Oxford", "Plainfield",
+    "Plainville", "Plymouth", "Pomfret", "Portland", "Preston",
+    "Prospect", "Putnam", "Redding", "Ridgefield", "Rocky Hill",
+    "Roxbury", "Salisbury", "Scotland", "Seymour", "Sharon",
+    "Sherman", "Simsbury", "Somers", "South Windsor", "Southbury",
+    "Southington", "Sprague", "Stafford", "Sterling", "Stonington",
+    "Stratford", "Suffield", "Thomaston", "Thompson", "Tolland",
+    "Trumbull", "Union", "Vernon", "Voluntown", "Wallingford",
+    "Warren", "Washington", "Waterford", "Watertown", "West Hartford",
+    "Westbrook", "Weston", "Westport", "Wethersfield", "Willington",
+    "Wilton", "Winchester", "Windham", "Windsor", "Windsor Locks",
+    "Wolcott", "Woodbridge", "Woodbury"
+]
